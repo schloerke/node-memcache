@@ -1,13 +1,12 @@
-NODE = node
-TEST = expresso
-TESTS ?= test/*.js
 
 test:
-	@CONNECT_ENV=test $(TEST) \
-	-I lib \
-	$(TEST_FLAGS) $(TESTS)
+	@ ./node_modules/.bin/nodeunit tests/*.js
 
-test-cov:
-	@$(MAKE) test TEST_FLAGS="--cov"
+watch-tests:
+	@ coffee --compile --bare --watch -o test/ test/coffee/*.coffee &
 
-.PHONY: test test-cov
+watch-lib:
+	@ coffee --compile --bare --watch -o lib/ lib/coffee/*.coffee &
+
+watch: watch-lib watch-tests
+

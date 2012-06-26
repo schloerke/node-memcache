@@ -1,21 +1,25 @@
 {
   "name": "memcache",
   "description": "simple memcache client",
-  "version": "0.3.0",
-  "homepage": "https://github.com/elbart/node-memcache",
-  "repository": "git://github.com/elbart/node-memcache.git",
-  "author": "Tim Eggert <tim@elbart.com>",
-  "main": "./lib/memcache",
+  "version": "0.3.1",
+  "homepage": "https://github.com/schloerke/node-memcache",
+  "repository": "git://github.com/schloerke/node-memcache.git",
+  "author": "Barret Schloerke <schloerke@gmail.com>",
+  "contributors": [
+    "Tim Eggert <tim@elbart.com>"
+  ],
+  "main": "./index",
   "devDependencies": {
-    "expresso": ">=0.7.0"
+    "nodeunit"     : "0.7.4",
+    "coffee-script": "1.3.3"
   },
   "directories": {
-    "lib": "lib",
+    "lib" : "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "make test",
-    "test-cov": "make test-cov"
+    "test"    : "make test",
+    "watch"   : "make watch"
   },
   "engines": {
     "node": ">=0.4.12"
