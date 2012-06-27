@@ -2,10 +2,13 @@
 # tests for nodeunit
 #
 
-util     = require('util')
+util = require('util')
+fs   = require('fs')
+
 memcache = require('../lib/memcache.js')
-port     = 11211;
-host     = "127.0.0.1"
+
+port = 11211
+host = "127.0.0.1"
 
 
 num_keys = (obj) ->
@@ -241,6 +244,47 @@ exports.t = {
                   test.equal(error, 'ERROR')
                   test.done()
                   return
+      return
+
+    'big_file': (test) ->
+      test.expect(2)
+      lorem = fs.readFileSync("./lorem.txt")
+      mc.set "lorem", lorem, (err, r) ->
+        mc.get 'lorem', (err, r) ->
+          test.equal(err, null)
+          test.equal(lorem, r)
+
+          mc.delete 'lorem', (err, r) ->
+            test.done()
+            return
+          return
+        return
+      return
+
+    'many big files': (test) ->
+      test.expect(6)
+      lorem = fs.readFileSync("./lorem.txt")
+
+      mc.set "lorem1", lorem, (err, r) ->
+        mc.set "lorem2", lorem, (err, r) ->
+          mc.set "lorem3", lorem, (err, r) ->
+            mc.set "lorem4", lorem, (err, r) ->
+              mc.set "lorem5", lorem, (err, r) ->
+                mc.get ['lorem1', 'lorem2', 'lorem3', 'lorem4', 'lorem5'], (err, obj) ->
+                  test.equal(err, null)
+                  test.equal(obj.lorem1, lorem)
+                  test.equal(obj.lorem1, lorem)
+                  test.equal(obj.lorem1, lorem)
+                  test.equal(obj.lorem1, lorem)
+                  test.equal(obj.lorem1, lorem)
+
+                  mc.delete "lorem1", ->
+                    mc.delete "lorem2", ->
+                      mc.delete "lorem3", ->
+                        mc.delete "lorem4", ->
+                          mc.delete "lorem5", ->
+                            test.done()
+                            return
       return
 
   }

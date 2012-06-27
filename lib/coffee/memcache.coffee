@@ -375,6 +375,8 @@ Client.prototype.handle_get_multi = (strBuffer) ->
 
   while strBuffer.length > 0
 
+    # console.error("\n\n\n\n\n\n\n\n\nmulti_get strBuffer: ", strBuffer)
+
     # found the end tag
     if strBuffer.indexOf(endTag) is 0
       collectedLength += endTagLen
@@ -423,8 +425,11 @@ Client.prototype.handle_get_multi = (strBuffer) ->
       # no result, only collected length, no error, no callback
       return [null, collectedLength, null, true]
 
+    fullEndPos = endPos + crlfLen
+    strBuffer = strBuffer.substring(fullEndPos)
+
     ret[key] = resultValueStr
-    collectedLength += endPos + crlfLen
+    collectedLength += fullEndPos
 
   # end while loop
 
